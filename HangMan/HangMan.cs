@@ -32,27 +32,23 @@ namespace HangManGame
         {
             if (AmountOfGuesses == 10)
             {
-                WriteLine($"The secret word is :{SecretWords[SWI]}");
+                WriteLine("You lose");
             }
             else
             {
                 WriteLine("Congratulation you found the secret word!");
             }
-            //Menu mainMenu = new Menu("what would you like to do?", new string[] { "Play again", "Exit" });
-            //int selectedOption = mainMenu.Run();
-            //switch (selectedOption)
-            //{
-            //    case 0:
-            //        //SecretWordIndex = RandomSecretWord();
-            //        StartGame();
-            //        break;
-            //    case 1:
-            //        Environment.Exit(0);
-            //        break;
-            //}
+            WriteLine($"The secret word is: {SecretWords[SWI]}");
+
+            WriteLine("Press any key to play again");
+            ReadKey();
+            Clear();
+            StartGame();
         }
         private int RandomSecretWord()
         {
+            FoundSecretWord = false;
+            AmountOfGuesses = 0;
             WrongGuesses = new StringBuilder();
             int randomNr = new Random().Next(0, SecretWords.Length - 1);
             SecretWord = SecretWords[randomNr];
@@ -111,22 +107,16 @@ namespace HangManGame
             if (AmountOfGuesses > 0)
             {
                 WriteLine(" ");
-                WriteLine("Wrong guesses below");
+                WriteLine("[Wrong guesses below]");
                 WriteLine(WrongGuesses.ToString());
             }
         }
         private void AddWrongGuesses(string userInput)
         {
-            string SecretWordLowCase = new string(CorrectWords).ToLower();
-            if (userInput.Length == 1)
-            {
-                if (!SecretWordLowCase.Contains(userInput))
-                {
-                    AmountOfGuesses++;
-                    WrongGuesses.Append($"{userInput}, ");
-                }
-            }
-            else
+            bool checkWgContainsInput = WrongGuesses.ToString().Split(", ").Contains(userInput);
+            bool SecretWordLowCase = new string(CorrectWords).ToLower().Contains(userInput);
+
+            if (!SecretWordLowCase && !checkWgContainsInput)
             {
                 AmountOfGuesses++;
                 WrongGuesses.Append($"{userInput}, ");
